@@ -1,0 +1,34 @@
+package br.com.autoglass.frameworkSelenium.LocatorsFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.WebElement;
+
+public class AnyBy extends By{
+
+	private final By[] bys;
+	
+	private AnyBy(By...bys) {
+		this.bys = bys;
+	}
+	
+	public static By any(By...bys){
+		return new AnyBy(bys);
+	}
+	
+	@Override
+	public List<WebElement> findElements(SearchContext context) {
+		
+		List<WebElement> elements = new ArrayList<WebElement>();
+		
+		for(By by : bys){
+			elements.addAll(context.findElements(by));
+		}
+		
+		return elements;
+	}
+
+}

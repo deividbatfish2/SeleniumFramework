@@ -1,0 +1,11 @@
+package br.com.autoglass.frameworkSelenium.LocatorsFactory;
+
+public final class TdBy {
+
+	private TdBy(){
+		
+	}
+	
+	
+	
+}
