@@ -1,4 +1,4 @@
-package br.com.autoglass.frameworkSelenium.LocatorsFactory;
+package br.com.autoglass.frameworkSelenium.locatorsFactory;
 
 import java.util.ArrayList;
 import java.util.List;

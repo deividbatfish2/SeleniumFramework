@@ -1,4 +1,4 @@
-package br.com.autoglass.frameworkSelenium.LoadingPageFactory;
+package br.com.autoglass.frameworkSelenium.loadingPageFactory;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

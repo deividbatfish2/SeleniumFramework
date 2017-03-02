@@ -1,4 +1,4 @@
-package br.com.autoglass.frameworkSelenium.LoadingPageFactory;
+package br.com.autoglass.frameworkSelenium.loadingPageFactory;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

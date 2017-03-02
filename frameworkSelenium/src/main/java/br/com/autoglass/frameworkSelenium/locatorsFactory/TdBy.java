@@ -1,4 +1,4 @@
-package br.com.autoglass.frameworkSelenium.LocatorsFactory;
+package br.com.autoglass.frameworkSelenium.locatorsFactory;
 
 import org.openqa.selenium.By;
 

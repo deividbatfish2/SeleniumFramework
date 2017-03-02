@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import br.com.autoglass.frameworkSelenium.LocatorsFactory.ElementBy;
+import br.com.autoglass.frameworkSelenium.locatorsFactory.ElementBy;
 
 /**
  * Hello world!
