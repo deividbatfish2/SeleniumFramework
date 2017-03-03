@@ -1,12 +1,19 @@
 package br.com.autoglass.frameworkSelenium.configuration;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,22 +34,43 @@ public class WebDriverConfig {
         return new DesiredCapabilities(browserName, "", Platform.ANY);
     }
 
+    private WebDriver localDriver(DesiredCapabilities desiredCapabilities) throws IOException {
+    	
+    	switch (desiredCapabilities.getBrowserName()) {
+    	case BrowserType.CHROME:
+    		System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
+    		WebDriver navegador = new ChromeDriver(desiredCapabilities);
+    		navegador.manage().window().maximize();
+    		return navegador;
+    	case BrowserType.FIREFOX:
+    		return new FirefoxDriver(desiredCapabilities);
+    	case BrowserType.HTMLUNIT:
+    		return new HtmlUnitDriver(desiredCapabilities);
+    	case BrowserType.SAFARI:
+    		return new SafariDriver(desiredCapabilities);
+    	default:
+    		throw new IllegalStateException("unknown browser " + desiredCapabilities.getBrowserName());
+    	}
+    }
+    
+    private WebDriver remoteDriver(URL remoteUrl, DesiredCapabilities desiredCapabilities) {
+    	return new Augmenter().augment(new RemoteWebDriver(remoteUrl, desiredCapabilities));
+	}
+    
     @Bean(destroyMethod = "quit")
-    public WebDriver webDriver(DesiredCapabilities desiredCapabilities) {
-        switch (desiredCapabilities.getBrowserName()) {
-            case BrowserType.FIREFOX:
-                System.setProperty("webdriver.gecko.driver", "target/geckodriver");
-                return new FirefoxDriver(desiredCapabilities);
-            case BrowserType.HTMLUNIT:
-                return new HtmlUnitDriver(desiredCapabilities);
-            case BrowserType.PHANTOMJS:
-                return new HtmlUnitDriver(desiredCapabilities);
-            case BrowserType.CHROME:
-                System.setProperty("webdriver.chrome.driver", "target/chromedriver");
-                return new ChromeDriver(desiredCapabilities);
-            default:
-                throw new IllegalStateException("unknown browser " + desiredCapabilities.getBrowserName());
-        }
+    public WebDriver webDriver(
+    		@Value("${webdriver.remote:false}") boolean remoteDriver,
+    		@Value("${webdriver.remote.url:http://localhost:4444/wd/hub}") 
+    		URL remoteUrl,
+    		DesiredCapabilities desiredCapabilities) throws Exception {
+    		return remoteDriver ?
+    		remoteDriver(remoteUrl, desiredCapabilities) :
+    		localDriver(desiredCapabilities);
+    }
+    
+    @Bean
+    public URI baseUrl(@Value("${webdriver.baseUrl:https://economia.uol.com.br}") URI value) {
+    return value;
     }
 	
 }
