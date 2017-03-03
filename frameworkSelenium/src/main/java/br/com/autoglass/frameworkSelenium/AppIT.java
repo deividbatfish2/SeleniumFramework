@@ -17,7 +17,7 @@ import br.com.autoglass.frameworkSelenium.screenShot.ScreenshotTaker;
 import br.com.autoglass.frameworkSelenium.configuration.WebDriverConfig;
 
 /**
- * Hello world!
+ * Pagina de testes do framework
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
