@@ -1,25 +1,34 @@
 package br.com.autoglass.frameworkSelenium.configuration;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-
 import org.apache.commons.lang3.SystemUtils;
+import org.littleshoot.proxy.HttpFiltersSource;
+import org.littleshoot.proxy.HttpProxyServer;
+import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 import org.openqa.selenium.Platform;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+import java.io.IOException;
+import java.net.*;
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Configuration
 public class WebDriverConfig {
@@ -31,11 +40,34 @@ public class WebDriverConfig {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+	@Bean
+	public HttpStatusCodeSupplier httpStatusCodeSupplier() {
+	
+		return new HttpStatusCodeSupplier();
+	}
+	
     @Bean
     public DesiredCapabilities desiredCapabilities(
-            @Value("${webdriver.capabilities.browserName:chrome}") String browserName
-    ) {
-        return new DesiredCapabilities(browserName, "", Platform.ANY);
+    		HttpProxyServer proxyServer,
+            @Value("${webdriver.capabilities.browserName:chrome}") String browserName,
+            @Value("${webdriver.proxy.enabled:true}") boolean proxyEnabled
+    ) throws UnknownHostException {
+    	
+            DesiredCapabilities capabilities =
+                    new DesiredCapabilities(browserName, "", Platform.ANY);
+            capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+
+            if (proxyEnabled) {
+                String httpProxy = proxyServer.getListenAddress().toString().substring(1); // remove a leading "/"
+                Proxy proxy = new Proxy().setHttpProxy(httpProxy).setSslProxy(httpProxy)
+                    .setFtpProxy(httpProxy).setSocksProxy(httpProxy);
+                capabilities.setCapability(CapabilityType.PROXY, proxy);
+            }
+
+           // populateCapabilites(capabilities);
+
+
+            return capabilities;
     }
 
     private WebDriver localDriver(DesiredCapabilities desiredCapabilities) throws IOException {
@@ -63,11 +95,11 @@ public class WebDriverConfig {
 
 	private void verificaSOESetaBinarioNavegador(DesiredCapabilities desiredCapabilities) {
 		if(SystemUtils.IS_OS_LINUX){
-			System.setProperty("webdriver.chrome.driver", "target/chromedriver");
+			System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
 			navegador = new BaseUrlDriver(new ChromeDriver(desiredCapabilities), new RetornaURL().retornaURL());
 		}
 		else{
-			System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
 			navegador = new BaseUrlDriver(new ChromeDriver(desiredCapabilities), new RetornaURL().retornaURL());
 		}
 	}
@@ -99,6 +131,25 @@ public class WebDriverConfig {
     	EventFiringWebDriver navegador = encapisula.encapsular(this.navegador);
 		
 		return navegador;
+	}
+    
+    private static int freePort() throws IOException {
+    	
+    	try (ServerSocket serverSocket = new ServerSocket(0)) {
+    		return serverSocket.getLocalPort();
+    	}
+	}
+    
+	@Bean(destroyMethod = "abort")
+	public HttpProxyServer proxyServer(HttpFiltersSource httpFiltersSource)
+	throws IOException, InterruptedException {
+		
+		InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost(), 0);
+		return DefaultHttpProxyServer.bootstrap()
+				.withNetworkInterface(inetSocketAddress)
+				.withFiltersSource(httpFiltersSource)
+				.withPort(freePort())
+				.start();
 	}
 	
 }

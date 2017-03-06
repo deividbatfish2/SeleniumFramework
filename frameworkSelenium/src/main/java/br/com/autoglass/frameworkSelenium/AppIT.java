@@ -1,6 +1,6 @@
 package br.com.autoglass.frameworkSelenium;
 
-import java.net.URI;
+import static org.junit.Assert.*;
 
 import javax.inject.Inject;
 
@@ -12,9 +12,9 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import br.com.autoglass.frameworkSelenium.screenShot.ScreenshotTaker;
-
+import br.com.autoglass.frameworkSelenium.configuration.HttpStatusCodeSupplier;
 import br.com.autoglass.frameworkSelenium.configuration.WebDriverConfig;
+import br.com.autoglass.frameworkSelenium.screenShot.ScreenshotTaker;
 
 /**
  * Pagina de testes do framework
@@ -32,9 +32,15 @@ public class AppIT
 	/*@Inject
 	private URI baseUrl;*/
 	
+	@Inject
+	private HttpStatusCodeSupplier httpStatusCodeSuplier;
+	
     @Test
-    public void teste(){
+    public void teste() throws Exception{
     	navegador.get("/empreendedorismo");
+    	
+    	assertEquals(200, httpStatusCodeSuplier.get());
+    	
     	System.out.println("Mais uma linha");
     }
 }
