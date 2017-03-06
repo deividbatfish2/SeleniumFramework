@@ -15,6 +15,7 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @Configuration
 public class WebDriverConfig {
 
+	private WebDriver navegador;
+	
 	@Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
@@ -36,21 +39,15 @@ public class WebDriverConfig {
     }
 
     private WebDriver localDriver(DesiredCapabilities desiredCapabilities) throws IOException {
-    	
-    	WebDriver navegador;
 		
     	switch (desiredCapabilities.getBrowserName()) {
     	case BrowserType.CHROME:
-    		if(SystemUtils.IS_OS_LINUX){
-    			System.setProperty("webdriver.chrome.driver", "target/chromedriver");
-        		navegador = new ChromeDriver(desiredCapabilities);
-    		}
-    		else{
-    			System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
-        		navegador = new ChromeDriver(desiredCapabilities);
-    		}
+    		verificaSOESetaBinarioNavegador(desiredCapabilities);
     		
     		navegador.manage().window().maximize();
+    		
+    		EventFiringWebDriver navegador = encapisulaNavegador();
+    		
     		return navegador;
     	case BrowserType.FIREFOX:
     		return new FirefoxDriver(desiredCapabilities);
@@ -62,6 +59,17 @@ public class WebDriverConfig {
     		throw new IllegalStateException("unknown browser " + desiredCapabilities.getBrowserName());
     	}
     }
+
+	private void verificaSOESetaBinarioNavegador(DesiredCapabilities desiredCapabilities) {
+		if(SystemUtils.IS_OS_LINUX){
+			System.setProperty("webdriver.chrome.driver", "target/chromedriver");
+			navegador = new ChromeDriver(desiredCapabilities);
+		}
+		else{
+			System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
+			navegador = new ChromeDriver(desiredCapabilities);
+		}
+	}
     
     private WebDriver remoteDriver(URL remoteUrl, DesiredCapabilities desiredCapabilities) {
     	return new Augmenter().augment(new RemoteWebDriver(remoteUrl, desiredCapabilities));
@@ -82,5 +90,14 @@ public class WebDriverConfig {
     public URI baseUrl(@Value("${webdriver.baseUrl:https://economia.uol.com.br}") URI value) {
     return value;
     }
+    
+    private EventFiringWebDriver encapisulaNavegador() {
+		
+    	WebDriverConfigEncapisular encapisula = new WebDriverConfigEncapisular();
+    	
+    	EventFiringWebDriver navegador = encapisula.encapisular(this.navegador);
+		
+		return navegador;
+	}
 	
 }
