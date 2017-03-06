@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,10 +37,19 @@ public class WebDriverConfig {
 
     private WebDriver localDriver(DesiredCapabilities desiredCapabilities) throws IOException {
     	
+    	WebDriver navegador;
+		
     	switch (desiredCapabilities.getBrowserName()) {
     	case BrowserType.CHROME:
-    		System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
-    		WebDriver navegador = new ChromeDriver(desiredCapabilities);
+    		if(SystemUtils.IS_OS_LINUX){
+    			System.setProperty("webdriver.chrome.driver", "target/chromedriver");
+        		navegador = new ChromeDriver(desiredCapabilities);
+    		}
+    		else{
+    			System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
+        		navegador = new ChromeDriver(desiredCapabilities);
+    		}
+    		
     		navegador.manage().window().maximize();
     		return navegador;
     	case BrowserType.FIREFOX:
