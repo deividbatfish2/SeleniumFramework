@@ -42,6 +42,7 @@ public class WebDriverConfig {
 		
     	switch (desiredCapabilities.getBrowserName()) {
     	case BrowserType.CHROME:
+    		
     		verificaSOESetaBinarioNavegador(desiredCapabilities);
     		
     		navegador.manage().window().maximize();
@@ -63,11 +64,11 @@ public class WebDriverConfig {
 	private void verificaSOESetaBinarioNavegador(DesiredCapabilities desiredCapabilities) {
 		if(SystemUtils.IS_OS_LINUX){
 			System.setProperty("webdriver.chrome.driver", "target/chromedriver");
-			navegador = new ChromeDriver(desiredCapabilities);
+			navegador = new BaseUrlDriver(new ChromeDriver(desiredCapabilities), new RetornaURL().retornaURL());
 		}
 		else{
 			System.setProperty("webdriver.chrome.driver", "target/chromedriver.exe");
-			navegador = new ChromeDriver(desiredCapabilities);
+			navegador = new BaseUrlDriver(new ChromeDriver(desiredCapabilities), new RetornaURL().retornaURL());
 		}
 	}
     
@@ -86,10 +87,10 @@ public class WebDriverConfig {
     		localDriver(desiredCapabilities);
     }
     
-    @Bean
+    /*@Bean
     public URI baseUrl(@Value("${webdriver.baseUrl:https://economia.uol.com.br}") URI value) {
     return value;
-    }
+    }*/
     
     private EventFiringWebDriver encapisulaNavegador() {
 		

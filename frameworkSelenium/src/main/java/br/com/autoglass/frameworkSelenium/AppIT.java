@@ -29,11 +29,12 @@ public class AppIT
 	@Inject
 	private WebDriver navegador;
 	
-	@Inject
-	private URI baseUrl;
+	/*@Inject
+	private URI baseUrl;*/
 	
     @Test
     public void teste(){
-    	navegador.get(baseUrl + "/empreendedorismo");
+    	navegador.get("/empreendedorismo");
+    	System.out.println("Mais uma linha");
     }
 }

@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
+import br.com.autoglass.frameworkSelenium.configuration.BaseUrlDriver;
+
 public class ScreenshotTaker extends AbstractTestExecutionListener{
 
 	@Override
