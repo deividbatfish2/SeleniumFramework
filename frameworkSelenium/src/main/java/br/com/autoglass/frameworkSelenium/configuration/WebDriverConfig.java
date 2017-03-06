@@ -93,9 +93,9 @@ public class WebDriverConfig {
     
     private EventFiringWebDriver encapisulaNavegador() {
 		
-    	WebDriverConfigEncapisular encapisula = new WebDriverConfigEncapisular();
+    	WebDriverConfigEncapsular encapisula = new WebDriverConfigEncapsular();
     	
-    	EventFiringWebDriver navegador = encapisula.encapisular(this.navegador);
+    	EventFiringWebDriver navegador = encapisula.encapsular(this.navegador);
 		
 		return navegador;
 	}

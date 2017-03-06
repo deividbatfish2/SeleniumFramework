@@ -10,15 +10,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-public class WebDriverConfigEncapisular {
+public class WebDriverConfigEncapsular {
 	
 	public EventFiringWebDriver navegador;
 
-	public WebDriverConfigEncapisular() {
+	public WebDriverConfigEncapsular() {
 		
 	}
 	
-	public EventFiringWebDriver encapisular(WebDriver navegador){
+	public EventFiringWebDriver encapsular(WebDriver navegador){
 		
 		this.navegador = new EventFiringWebDriver(navegador);
 		
