@@ -20,8 +20,9 @@ public class LoadingPageFactory {
                         String.format("expected page title %s but was %s", expectedPageTitle, actualPageTitle));
             }
         }
+        
         String xpath = verify.xpath();
-        if (!expectedPageTitle.equals(Verify.INVALID_XPATH)) {
+        if (!xpath.equals(Verify.INVALID_XPATH)) {
             if (driver.findElements(By.xpath(xpath)).isEmpty()) {
                 throw new IllegalStateException(String.format("expected XPath %s", xpath));
             }

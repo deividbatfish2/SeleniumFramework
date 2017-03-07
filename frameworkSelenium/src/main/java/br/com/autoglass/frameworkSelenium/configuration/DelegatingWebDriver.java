@@ -2,6 +2,7 @@ package br.com.autoglass.frameworkSelenium.configuration;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -17,7 +18,7 @@ import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.interactions.Mouse;
 
 public class DelegatingWebDriver implements WebDriver, JavascriptExecutor, TakesScreenshot,
-HasInputDevices, HasCapabilities{
+HasInputDevices, HasCapabilities, ExplicitWait {
 
 	private final WebDriver driver;
 	
@@ -49,11 +50,11 @@ HasInputDevices, HasCapabilities{
 		return driver.findElements(by);
 	}
 
-	@Override
+	/*@Override
 	public WebElement findElement(By by) {
 
 		return driver.findElement(by);
-	}
+	}*/
 
 	@Override
 	public String getPageSource() {
@@ -138,5 +139,15 @@ HasInputDevices, HasCapabilities{
 		
 		return ((JavascriptExecutor) driver).executeAsyncScript(script, args);
 	}
+
+	@Override
+    public Element findElement(By by) {
+        return new Element(driver.findElement(by));
+    }
+	
+	@Override
+    public Element findElement(Supplier<By> by) {
+        return new Element(driver.findElement(by.get()));
+    }
 
 }

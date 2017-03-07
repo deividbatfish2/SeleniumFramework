@@ -4,11 +4,11 @@ import java.net.URI;
 
 import org.openqa.selenium.WebDriver;
 
-public class BaseUrlDriver extends DelegatingWebDriver{
+public class BaseUrlDriver extends DelegatingWebDriver {
 
-	private final URI baseUrl;
+private final URI baseUrl;
 	
-	BaseUrlDriver(WebDriver driver, URI uri) {
+BaseUrlDriver(WebDriver driver, URI uri) {
 		super(driver);
 		this.baseUrl = uri;
 	}

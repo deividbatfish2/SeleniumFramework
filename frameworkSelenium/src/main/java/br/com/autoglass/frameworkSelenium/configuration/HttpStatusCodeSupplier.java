@@ -32,7 +32,7 @@ public class HttpStatusCodeSupplier extends HttpFiltersSourceAdapter{
 			public HttpObject serverToProxyResponse(HttpObject httpObject){
 				if(httpObject instanceof HttpResponse){
 					HttpResponse httpResponse = (HttpResponse) httpObject;
-					System.out.println(uri);
+					
 					if(uri.endsWith("html")){
 						httpStatusCode = httpResponse.getStatus().code();
 					}
