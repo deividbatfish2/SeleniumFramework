@@ -30,8 +30,8 @@ public class LazyElement implements	WebElement,	Locatable{
 	
 	@Override
 	public <X> X getScreenshotAs(OutputType<X> arg0) throws WebDriverException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getScreenshotAs(arg0);
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class LazyElement implements	WebElement,	Locatable{
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
 		
+		get().clear();
 	}
 
 	@Override
@@ -54,86 +54,84 @@ public class LazyElement implements	WebElement,	Locatable{
 
 	@Override
 	public WebElement findElement(By arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().findElement(arg0);
 	}
 
 	@Override
 	public List<WebElement> findElements(By arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().findElements(arg0);
 	}
 
 	@Override
 	public String getAttribute(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getAttribute(arg0);
 	}
 
 	@Override
 	public String getCssValue(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getCssValue(arg0);
 	}
 
 	@Override
 	public Point getLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getLocation();
 	}
 
 	@Override
 	public Rectangle getRect() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getRect();
 	}
 
 	@Override
 	public Dimension getSize() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getSize();
 	}
 
 	@Override
 	public String getTagName() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getTagName();
 	}
 
 	@Override
 	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return get().getText();
 	}
 
 	@Override
 	public boolean isDisplayed() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return get().isDisplayed();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return get().isEnabled();
 	}
 
 	@Override
 	public boolean isSelected() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return get().isSelected();
 	}
 
 	@Override
 	public void sendKeys(CharSequence... arg0) {
-		// TODO Auto-generated method stub
-		
+		get().sendKeys(arg0);
 	}
 
 	@Override
 	public void submit() {
-		// TODO Auto-generated method stub
-		
+		get().submit();
 	}
 
 }

@@ -1,12 +1,12 @@
-package br.com.autoglass.frameworkSelenium.PageObjects;
+package br.com.autoglass.frameworkSelenium.components.enumerator;
 
 import java.util.function.Supplier;
 
 import org.openqa.selenium.By;
 
-public enum CssSelector implements Supplier<By>{
+public enum TagName implements Supplier<By>{
 	
-	txbLogin("input[placeholder=\"Login:\"]"),
+	OPTION("option"),
 	
 	txbSenha("input[placeholder=\"Senha:\"]"),
 	
@@ -14,8 +14,8 @@ public enum CssSelector implements Supplier<By>{
 
 	private final By by;
 	
-	CssSelector(String by) {
-		this.by = By.cssSelector(by);
+	TagName(String by) {
+		this.by = By.tagName(by);
 	}
 	
 	@Override

@@ -1,6 +1,9 @@
 package br.com.autoglass.frameworkSelenium.Test;
 
-import static org.junit.Assert.*;
+import static br.com.autoglass.frameworkSelenium.PageObjects.ByCss.btnEntrar;
+import static br.com.autoglass.frameworkSelenium.PageObjects.ByCss.txbLogin;
+import static br.com.autoglass.frameworkSelenium.PageObjects.ByCss.txbSenha;
+import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
@@ -12,17 +15,10 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import br.com.autoglass.frameworkSelenium.PageObjects.CssSelector;
-import br.com.autoglass.frameworkSelenium.PageObjects.LoginIT;
 import br.com.autoglass.frameworkSelenium.configuration.Browser;
 import br.com.autoglass.frameworkSelenium.configuration.HttpStatusCodeSupplier;
 import br.com.autoglass.frameworkSelenium.configuration.WebDriverConfig;
-import br.com.autoglass.frameworkSelenium.loadingPageFactory.LoadingPageFactory;
 import br.com.autoglass.frameworkSelenium.screenShot.ScreenshotTaker;
-
-import static br.com.autoglass.frameworkSelenium.PageObjects.CssSelector.txbLogin;
-import static br.com.autoglass.frameworkSelenium.PageObjects.CssSelector.btnEntrar;
-import static br.com.autoglass.frameworkSelenium.PageObjects.CssSelector.txbSenha;
 
 /**
  * Pagina de testes do framework
@@ -59,9 +55,9 @@ public class LoginTest
     	/*LoginIT loginPage = LoadingPageFactory.get(navegador, LoginIT.class);
     	loginPage.Logar("qualidade.ti", "megazord");*/
     	
-    	navegador.findElementwithTimeout(txbLogin).sendKeys("qualidade.ti");
-    	navegador.findElementwithTimeout(txbSenha).sendKeys("megazord");
+    	navegador.setImputText(txbLogin, "qualidade.ti");
+    	navegador.setImputText(txbSenha, "megazord");
     	
-    	navegador.findElement(btnEntrar).click();;
+    	navegador.findElementWithTimeout(btnEntrar).click();;
     }
 }

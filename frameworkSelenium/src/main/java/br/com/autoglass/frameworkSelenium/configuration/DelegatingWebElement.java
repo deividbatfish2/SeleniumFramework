@@ -1,7 +1,6 @@
 package br.com.autoglass.frameworkSelenium.configuration;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -11,26 +10,16 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-public class DelegatingWebElement implements WebElement{
-
-	protected final WebElement delegate;
+public class DelegatingWebElement extends DelegatingSearchContext<WebElement>
+	implements WebElement{
 
     public DelegatingWebElement(WebElement delegate) {
-        this.delegate = delegate;
+        super(delegate);
     }
 
     @Override
     public List<WebElement> findElements(By by) {
         return delegate.findElements(by);
-    }
-
-    @Override
-    public Element findElement(By by) {
-        return new Element(delegate.findElement(by));
-    }
-
-    public Element findElement(Supplier<By> by) {
-        return new Element(delegate.findElement(by.get()));
     }
 
     @Override

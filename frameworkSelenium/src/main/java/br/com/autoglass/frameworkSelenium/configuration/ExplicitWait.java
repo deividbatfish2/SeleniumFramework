@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 public interface ExplicitWait extends SearchScope{
 	
-	default Element findElementwithTimeout(Supplier<By> by){
+	default Element findElementWithTimeout(Supplier<By> by){
 		
 		return new FluentWait<>(this)
 				.withTimeout(1, SECONDS)
